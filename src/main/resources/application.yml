@@ -3,10 +3,9 @@ spring:
     name: spring-security-practice
   
   datasource:
-    url: jdbc:postgresql://localhost:5432/security_practice
+    url: jdbc:postgresql://localhost:5432/security
     username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
+    password: postgress
   
   flyway:
     enabled: true
