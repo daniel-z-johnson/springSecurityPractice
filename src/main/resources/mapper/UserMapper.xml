@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.practice.security.mapper.UserMapper">
+    
+    <resultMap id="UserResultMap" type="com.practice.security.model.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="enabled" column="enabled"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+    
+    <insert id="insertUser" parameterType="com.practice.security.model.User" 
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (username, password, enabled, created_at, updated_at)
+        VALUES (#{username}, #{password}, #{enabled}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    </insert>
+    
+    <select id="findByUsername" resultMap="UserResultMap">
+        SELECT id, username, password, enabled, created_at, updated_at
+        FROM users
+        WHERE username = #{username}
+    </select>
+    
+    <select id="findById" resultMap="UserResultMap">
+        SELECT id, username, password, enabled, created_at, updated_at
+        FROM users
+        WHERE id = #{id}
+    </select>
+    
+    <update id="updateUser" parameterType="com.practice.security.model.User">
+        UPDATE users
+        SET username = #{username},
+            password = #{password},
+            enabled = #{enabled},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
+    
+</mapper>
