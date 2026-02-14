@@ -3,6 +3,7 @@ package com.practice.security.controller;
 import com.practice.security.dto.ApiResponse;
 import com.practice.security.dto.LoginRequest;
 import com.practice.security.dto.SignupRequest;
+import com.practice.security.exception.UsernameAlreadyExistsException;
 import com.practice.security.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -11,8 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -31,9 +34,12 @@ public class AuthController {
             authService.signup(request);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(ApiResponse.success("User registered successfully"));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        } catch (UsernameAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(ApiResponse.error(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("An error occurred during registration"));
         }
     }
     
@@ -58,9 +64,15 @@ public class AuthController {
             );
             
             return ResponseEntity.ok(ApiResponse.success("Login successful"));
-        } catch (Exception e) {
+        } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(ApiResponse.error("Invalid username or password"));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("Authentication failed"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("An error occurred during login"));
         }
     }
     

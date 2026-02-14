@@ -2,6 +2,7 @@ package com.practice.security.service;
 
 import com.practice.security.dto.ProfileResponse;
 import com.practice.security.dto.ProfileUpdateRequest;
+import com.practice.security.exception.ResourceNotFoundException;
 import com.practice.security.mapper.ProfileMapper;
 import com.practice.security.mapper.UserMapper;
 import com.practice.security.model.Profile;
@@ -32,10 +33,10 @@ public class ProfileService {
     @Transactional(readOnly = true)
     public ProfileResponse getProfile(String username) {
         User user = userMapper.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         
         Profile profile = profileMapper.findByUserId(user.getId())
-                .orElseThrow(() -> new RuntimeException("Profile not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
         
         return ProfileResponse.builder()
                 .username(user.getUsername())
@@ -48,10 +49,10 @@ public class ProfileService {
     @Transactional
     public ProfileResponse updateProfile(String username, ProfileUpdateRequest request) {
         User user = userMapper.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         
         Profile profile = profileMapper.findByUserId(user.getId())
-                .orElseThrow(() -> new RuntimeException("Profile not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
         
         if (request.getFavoriteTechnologies() != null) {
             profile.setFavoriteTechnologies(request.getFavoriteTechnologies());

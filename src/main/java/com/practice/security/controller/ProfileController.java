@@ -3,8 +3,10 @@ package com.practice.security.controller;
 import com.practice.security.dto.ApiResponse;
 import com.practice.security.dto.ProfileResponse;
 import com.practice.security.dto.ProfileUpdateRequest;
+import com.practice.security.exception.ResourceNotFoundException;
 import com.practice.security.service.ProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,9 +26,12 @@ public class ProfileController {
             
             ProfileResponse profile = profileService.getProfile(username);
             return ResponseEntity.ok(ApiResponse.success("Profile retrieved successfully", profile));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest()
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.error(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("An error occurred while retrieving profile"));
         }
     }
     
@@ -38,9 +43,12 @@ public class ProfileController {
             
             ProfileResponse profile = profileService.updateProfile(username, request);
             return ResponseEntity.ok(ApiResponse.success("Profile updated successfully", profile));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest()
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.error(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("An error occurred while updating profile"));
         }
     }
 }

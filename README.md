@@ -153,5 +153,6 @@ The application can be configured via `src/main/resources/application.yml`:
 
 - Passwords are encrypted using BCrypt
 - Sessions are stored in Redis
-- CSRF protection is disabled for API usage
+- CSRF protection is enabled using cookie-based tokens
 - All endpoints except signup and login require authentication
+- CSRF token is available in the `XSRF-TOKEN` cookie and should be included in the `X-XSRF-TOKEN` header for state-changing requests

@@ -1,6 +1,7 @@
 package com.practice.security.service;
 
 import com.practice.security.dto.SignupRequest;
+import com.practice.security.exception.UsernameAlreadyExistsException;
 import com.practice.security.mapper.UserMapper;
 import com.practice.security.model.User;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class AuthService {
     @Transactional
     public void signup(SignupRequest request) {
         if (userMapper.findByUsername(request.getUsername()).isPresent()) {
-            throw new RuntimeException("Username already exists");
+            throw new UsernameAlreadyExistsException("Username already exists");
         }
         
         User user = User.builder()
