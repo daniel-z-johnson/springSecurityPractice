@@ -1,0 +1,11 @@
+A spring boot project with spring security, it should be restful, the ability for a new user to sign up, log in and log out. An enpoint to edit profile. The user/user profile class should include email, an editable list of favorite technologies. It should use postgres, lombock, my batis, and spring web.
+
+A spring boot project with spring security, it should be restful, the ability for a new user to sign up, log in and log out. An enpoint to edit profile. The user class should include email, an editable list of favorite technologies. It should use postgres, lombock, myBatis, and spring web. It should use sessions with Redis. It should do the migrations with FlyWay
+
+
+A Spring Boot project with Spring Security
+It should be restful
+There should be an endpoint for signup, loging, log out, getting profile and editing profile
+users login with an email
+Users should be able to set up profiles, profile should include list of favorite technologies , video games, books, and a username
+Use Postgres, mybatis, sessions with redis, and lombock, flyway
