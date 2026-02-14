@@ -7,11 +7,11 @@
         <id property="id" column="id"/>
         <result property="userId" column="user_id"/>
         <result property="favoriteTechnologies" column="favorite_technologies" 
-                typeHandler="org.apache.ibatis.type.ArrayTypeHandler"/>
+                typeHandler="com.practice.security.mybatis.StringListTypeHandler"/>
         <result property="favoriteVideoGames" column="favorite_video_games" 
-                typeHandler="org.apache.ibatis.type.ArrayTypeHandler"/>
+                typeHandler="com.practice.security.mybatis.StringListTypeHandler"/>
         <result property="favoriteBooks" column="favorite_books" 
-                typeHandler="org.apache.ibatis.type.ArrayTypeHandler"/>
+                typeHandler="com.practice.security.mybatis.StringListTypeHandler"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
@@ -20,9 +20,9 @@
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO profiles (user_id, favorite_technologies, favorite_video_games, favorite_books, created_at, updated_at)
         VALUES (#{userId}, 
-                #{favoriteTechnologies, jdbcType=ARRAY, typeHandler=org.apache.ibatis.type.ArrayTypeHandler}::text[], 
-                #{favoriteVideoGames, jdbcType=ARRAY, typeHandler=org.apache.ibatis.type.ArrayTypeHandler}::text[], 
-                #{favoriteBooks, jdbcType=ARRAY, typeHandler=org.apache.ibatis.type.ArrayTypeHandler}::text[], 
+                #{favoriteTechnologies, jdbcType=ARRAY, typeHandler=com.practice.security.mybatis.StringListTypeHandler}::text[],
+                #{favoriteVideoGames, jdbcType=ARRAY, typeHandler=com.practice.security.mybatis.StringListTypeHandler}::text[],
+                #{favoriteBooks, jdbcType=ARRAY, typeHandler=com.practice.security.mybatis.StringListTypeHandler}::text[],
                 CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
     </insert>
     
@@ -34,9 +34,9 @@
     
     <update id="updateProfile" parameterType="com.practice.security.model.Profile">
         UPDATE profiles
-        SET favorite_technologies = #{favoriteTechnologies, jdbcType=ARRAY, typeHandler=org.apache.ibatis.type.ArrayTypeHandler}::text[],
-            favorite_video_games = #{favoriteVideoGames, jdbcType=ARRAY, typeHandler=org.apache.ibatis.type.ArrayTypeHandler}::text[],
-            favorite_books = #{favoriteBooks, jdbcType=ARRAY, typeHandler=org.apache.ibatis.type.ArrayTypeHandler}::text[],
+        SET favorite_technologies = #{favoriteTechnologies, typeHandler=com.practice.security.mybatis.StringListTypeHandler},
+            favorite_video_games = #{favoriteVideoGames, typeHandler=com.practice.security.mybatis.StringListTypeHandler},
+            favorite_books = #{favoriteBooks, typeHandler=com.practice.security.mybatis.StringListTypeHandler},
             updated_at = CURRENT_TIMESTAMP
         WHERE id = #{id}
     </update>
